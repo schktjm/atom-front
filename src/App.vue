@@ -6,7 +6,6 @@
       <router-link to="/about">About</router-link>
     </div>
     <router-view/>
-    <el-button type="primary">Default</el-button>
   </div>
 </template>
 
