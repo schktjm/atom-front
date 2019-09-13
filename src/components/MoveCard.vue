@@ -26,19 +26,36 @@
     export default {
         name: 'MoveCard',
         components: {IconWalking, IconBuss},
-        data() {
-            return {
-                move: {
-                    way: "buss",
-                    line: "会津バス 西若松駅東口",
-                    frm: "北柳原",
-                    to: "会津若松駅",
-                    past: 2,
-                    getOn: 1568258573586,
-                    getOff: 1568258873586,
-                    fare: 170
-                }
+        props: {
+            move: {
+                type: Object,
+                default: () => ({
+                    way: String,
+                    line: String,
+                    frm: String,
+                    to: String,
+                    past: {
+                        type: Number,
+                        default: 0
+                    },
+                    getOn: {
+                        type: Number,
+                        default: 0
+                    },
+                    getOff: {
+                        type: Number,
+                        default: 0
+                    },
+                    fare: {
+                        type: Number,
+                        default: 0
+                    }
+                })
             }
+
+        },
+        data() {
+            return {}
         }
     }
 </script>

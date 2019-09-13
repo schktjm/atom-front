@@ -2,8 +2,8 @@
   <el-card shadow="never" body-style="padding: 10px">
     <div class="stop-card-style">
       <div class="times-style">
-        <div v-if="stop.arriveTime > 0">{{getHM(stop.arriveTime)}}</div>
-        <div v-if="stop.leaveTime > 0">{{getHM(stop.leaveTime)}}</div>
+        <div v-if="stop.arrive > 0">{{getHM(stop.arrive)}}</div>
+        <div v-if="stop.leave > 0">{{getHM(stop.leave)}}</div>
       </div>
       <div>
         <span class="locate-name-style">{{stop.name}}</span>
@@ -20,8 +20,14 @@
             stop: {
                 type: Object,
                 default: () => ({
-                    arriveTime: Number,
-                    leaveTime: Number,
+                    arrive: {
+                        type: Number,
+                        default: -1
+                    },
+                    leave: {
+                        type: Number,
+                        default: -1
+                    },
                     name: String
                 })
             }
