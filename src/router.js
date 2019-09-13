@@ -25,6 +25,10 @@ export default new Router({
             path: '/test',
             name: 'test',
             component: () => import('./components/MoveCard')
+        },
+        {
+            path: '*',
+            component: Home
         }
     ]
 })

@@ -1,8 +1,19 @@
 <template>
   <div id="app">
-    <router-view/>
+    <Header/>
+    <div class="page-body">
+      <router-view/>
+    </div>
   </div>
 </template>
+
+<script>
+    import Header from './components/Header'
+
+    export default {
+        components: {Header}
+    }
+</script>
 
 <style lang="scss">
   #app {
@@ -14,16 +25,8 @@
     height: 100%;
   }
 
-  #nav {
-    padding: 30px;
-
-    a {
-      font-weight: bold;
-      color: #2c3e50;
-
-      &.router-link-exact-active {
-        color: #42b983;
-      }
-    }
+  .page-body {
+    padding: 10px;
   }
+
 </style>
