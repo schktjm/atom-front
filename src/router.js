@@ -24,7 +24,7 @@ export default new Router({
         {
             path: '/test',
             name: 'test',
-            component: () => import('./components/MoveCard')
+            component: () => import('./components/DetailSearch')
         },
         {
             path: '*',

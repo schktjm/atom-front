@@ -10,6 +10,14 @@
       <el-form-item>
         <el-button class="button-style" @click="dialogTableVisible = true">{{timeText}}</el-button>
       </el-form-item>
+      <div class="text-box-style" v-if="detailSearchForm.isChanged">
+        <div><span class="marker-style">{{detailSearchForm.money}}円以内で</span></div>
+        <div><span class="marker-style">{{detailSearchForm.time}}時間以内で</span></div>
+        <div><span class="marker-style" v-if="detailSearchForm.isNiceView">景色の綺麗なところ優先で</span></div>
+        <div><span class="marker-style" v-if="detailSearchForm.isManyTransfer">乗り換え回数が多くで</span></div>
+        <div><span class="marker-style" v-if="detailSearchForm.isLongWait">待ち時間がながくで</span></div>
+        <div>検索する！</div>
+      </div>
 
       <el-form-item>
         <el-button class="button-style" type="primary">この条件で検索</el-button>
@@ -17,6 +25,23 @@
       <el-dialog width="95%" :visible.sync="dialogTableVisible">
         <detailed-time @onCancel="onCancel" @onSubmit="setTimeText"/>
       </el-dialog>
+
+
+      <el-button class="button-style" @click="drawer = true" type="primary" plain>
+        もっと詳細検索
+      </el-button>
+
+      <el-drawer
+          title="詳細検索"
+          :visible.sync="drawer"
+          direction="btt"
+          size="70%"
+      >
+        <span>
+          <detail-search @change="setDetailSearch"></detail-search>
+        </span>
+      </el-drawer>
+
     </el-form>
   </div>
 </template>
@@ -24,10 +49,11 @@
 <script>
     // @ is an alias to /src
     import DetailedTime from '../components/DetailedTime';
+    import DetailSearch from '../components/DetailSearch';
 
     export default {
         name: 'home',
-        components: {DetailedTime},
+        components: {DetailedTime, DetailSearch},
         data() {
             return {
                 dialogTableVisible: false,
@@ -35,7 +61,16 @@
                     start: '',
                     end: '',
                 },
-                timeText: '現在時刻'
+                timeText: '現在時刻',
+                drawer: false,
+                detailSearchForm: {
+                    isChanged: false,
+                    money: 10000,
+                    time: 5,
+                    isNiceView: false,
+                    isManyTransfer: false,
+                    isLongWait: false
+                }
             }
         },
         methods: {
@@ -74,6 +109,10 @@
                     }
                 }
                 this.closeDialog();
+            },
+            setDetailSearch(form) {
+                this.detailSearchForm = {...form};
+                this.drawer = false;
             }
         }
     }
@@ -83,6 +122,18 @@
   .home {
     .button-style {
       width: 100%;
+    }
+
+    .text-box-style {
+      /*width: 200px;*/
+      padding: 10px 20px;
+
+      .marker-style {
+        background: linear-gradient(transparent 60%, rgba(244, 67, 54, 0.3) 0%);
+        font-size: 24px;
+        white-space: nowrap;
+      }
+
     }
   }
 
