@@ -1,11 +1,11 @@
 <template>
   <div class="home">
-    <el-form>
-      <el-form-item>
-        <el-input placeholder="出発地" v-model="form.start"></el-input>
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
+      <el-form-item prop="start">
+        <el-input placeholder="出発地" v-model="ruleForm.start"></el-input>
       </el-form-item>
-      <el-form-item>
-        <el-input placeholder="目的地" v-model="form.end"></el-input>
+      <el-form-item prop="end">
+        <el-input placeholder="目的地" v-model="ruleForm.end"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button class="button-style" @click="dialogTableVisible = true">{{timeText}}</el-button>
@@ -20,7 +20,7 @@
       </div>
 
       <el-form-item>
-        <el-button class="button-style" type="primary">この条件で検索</el-button>
+        <el-button class="button-style" type="primary" @click="submitForm('ruleForm')">この条件で検索</el-button>
       </el-form-item>
       <el-dialog width="95%" :visible.sync="dialogTableVisible">
         <detailed-time @onCancel="onCancel" @onSubmit="setTimeText"/>
@@ -57,11 +57,15 @@
         data() {
             return {
                 dialogTableVisible: false,
-                form: {
+                ruleForm: {
                     start: '',
                     end: '',
                 },
-                timeText: '現在時刻',
+                rules: {
+                    start: [{required: true, message: '出発地を入力してください', trigger: 'blur'}],
+                    end: [{required: true, message: '目的地を入力してください', trigger: 'blur'}],
+                },
+                timeText: '現在時刻 出発',
                 drawer: false,
                 detailSearchForm: {
                     isChanged: false,
@@ -92,9 +96,8 @@
                 return `${d.getHours()}:${d.getMinutes()}`
             },
             setTimeText(form) {
-                console.log(form);
                 if (form.isNow) {
-                    this.timeText = '現在時刻'
+                    this.timeText = '現在時刻 出発'
                 } else {
                     if (form.type === '1') {
                         this.timeText = `${this.parseYMD2ja(form.date)} 始発`
@@ -113,7 +116,16 @@
             setDetailSearch(form) {
                 this.detailSearchForm = {...form};
                 this.drawer = false;
-            }
+            },
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        this.$router.push('/list')
+                    } else {
+                        return false;
+                    }
+                });
+            },
         }
     }
 </script>

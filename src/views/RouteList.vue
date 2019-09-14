@@ -2,7 +2,7 @@
   <div class="route-list-style">
     <div style="margin: 10px;" v-for="(list,idx) in lists" :key="idx">
       <el-card :body-style="bodyStyle">
-        <el-link href="/" :underline="false">
+        <el-link @click="routerPush(list.id)" :underline="false">
           <div class="card-item-style">
             <div>
               <span class="time-font-style">{{getHM(list.startTime)}} - {{getHM(list.endTime)}}</span>
@@ -67,6 +67,9 @@
             getSubTime(s, e) {
                 const sub = e - s;
                 return sub / 1000 / 60;
+            },
+            routerPush(id) {
+                this.$router.push('/detail/' + id);
             }
         }
     }
@@ -75,6 +78,7 @@
 <style lang="scss" scoped>
   .route-list-style {
     height: 100%;
+    text-align: center;
 
     .button-top-style {
       margin-top: 30px;
