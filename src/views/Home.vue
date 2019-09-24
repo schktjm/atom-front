@@ -10,7 +10,15 @@
       <el-form-item>
         <el-button class="button-style" @click="dialogTableVisible = true">{{timeText}}</el-button>
       </el-form-item>
+
+      <el-form-item>
+        <el-radio-group class="radio-button-group-style" v-model="ruleForm.type">
+          <el-radio-button class="radio-button-style" label="normal">ノーマルモード</el-radio-button>
+          <el-radio-button class="radio-button-style" label="localBus">路線バスのみ</el-radio-button>
+        </el-radio-group>
+      </el-form-item>
       <div class="text-box-style" v-if="detailSearchForm.isChanged">
+        <div><span class="marker-style" v-if="detailSearchForm.isOnlyBus">路線バスのみで</span></div>
         <div><span class="marker-style">{{detailSearchForm.money}}円以内で</span></div>
         <div><span class="marker-style">{{detailSearchForm.time}}時間以内で</span></div>
         <div><span class="marker-style" v-if="detailSearchForm.isNiceView">景色の綺麗なところ優先で</span></div>
@@ -27,20 +35,21 @@
       </el-dialog>
 
 
-      <el-button class="button-style" @click="drawer = true" type="primary" plain>
-        もっと詳細検索
-      </el-button>
+      <!--      <el-button class="button-style" @click="drawer = true" type="primary" plain>-->
+      <!--        もっと詳細検索-->
+      <!--      </el-button>-->
 
-      <el-drawer
-          title="詳細検索"
-          :visible.sync="drawer"
-          direction="btt"
-          size="70%"
-      >
-        <span>
-          <detail-search @change="setDetailSearch"></detail-search>
-        </span>
-      </el-drawer>
+      <!--      <el-drawer-->
+      <!--          title="詳細検索"-->
+      <!--          :visible.sync="drawer"-->
+      <!--          direction="btt"-->
+      <!--          size="80%"-->
+      <!--          custom-class="detail-search-scroll"-->
+      <!--      >-->
+      <!--      <span>-->
+      <!--          <detail-search @change="setDetailSearch"></detail-search>-->
+      <!--        </span>-->
+      <!--      </el-drawer>-->
 
     </el-form>
   </div>
@@ -60,6 +69,7 @@
                 ruleForm: {
                     start: '',
                     end: '',
+                    type: 'normal'
                 },
                 rules: {
                     start: [{required: true, message: '出発地を入力してください', trigger: 'blur'}],
@@ -69,11 +79,15 @@
                 drawer: false,
                 detailSearchForm: {
                     isChanged: false,
+                    isOnlyBus: false,
                     money: 10000,
                     time: 5,
                     isNiceView: false,
                     isManyTransfer: false,
                     isLongWait: false
+                },
+                detailClass: {
+                    "overflow": "scroll"
                 }
             }
         },
@@ -120,6 +134,8 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        console.log(this.ruleForm);
+                        console.log(this.detailSearchForm);
                         this.$router.push('/list')
                     } else {
                         return false;
@@ -136,6 +152,20 @@
       width: 100%;
     }
 
+    .radio-button-group-style {
+      width: 100%;
+
+
+      .radio-button-style {
+        width: 50%;
+
+        /deep/ span {
+          width: 100%;
+
+        }
+      }
+    }
+
     .text-box-style {
       /*width: 200px;*/
       padding: 10px 20px;
@@ -147,6 +177,11 @@
       }
 
     }
+
+  }
+
+  .detail-search-scroll {
+    overflow: scroll;
   }
 
 </style>

@@ -1,6 +1,10 @@
 <template>
   <el-form class="detail-search-style">
     <el-form-item>
+      <label class="label-style">路線バスのみ</label>
+      <el-switch v-model="form.isOnlyBus"></el-switch>
+    </el-form-item>
+    <el-form-item>
       <span>{{form.money}}円以内</span>
       <el-slider class="slider-style" :max="30000" :show-tooltip="false" :step="1000" v-model="form.money"
                  :marks="moneyMarks"></el-slider>
@@ -61,6 +65,7 @@
             reset() {
                 this.form = {
                     isChanged: false,
+                    isOnlyBus: false,
                     money: 10000,
                     time: 5,
                     isNiceView: false,
@@ -75,6 +80,7 @@
 <style lang="scss" scoped>
   .detail-search-style {
     padding: 10px 30px;
+    overflow: scroll;
 
     .slider-style {
       /*width: 80%;*/
