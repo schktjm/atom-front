@@ -159,7 +159,7 @@
       .radio-button-style {
         width: 50%;
 
-        /deep/ span {
+        &::v-deep span {
           width: 100%;
 
         }
