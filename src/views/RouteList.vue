@@ -1,6 +1,6 @@
 <template>
   <div class="route-list-style">
-    <div style="margin: 10px;" v-for="(list,idx) in lists" :key="idx">
+    <div style="margin: 10px;" v-for="(list,idx) in routes" :key="idx">
       <el-card :body-style="bodyStyle">
         <el-link @click="routerPush(list.id)" :underline="false">
           <div class="card-item-style">
@@ -15,13 +15,13 @@
             <div>
               <icon-start/>
               <span v-for="(r,jdx) in list.route" :key="jdx">
-            <span v-if="r.way === 'buss'">
-              {{r.from}} - <icon-buss/> - {{r.to}}
-            </span>
-            <span class="no-wrap-style" v-else>
-             - <icon-walking/> {{getSubTime(r["get-on"], r["get-off"])}}分 -
-            </span>
-          </span>
+                <span v-if="r.way === 'buss'">
+                  {{r.from}} - <icon-buss/> - {{r.to}}
+                </span>
+                <span class="no-wrap-style" v-else>
+                 - <icon-walking/> {{getSubTime(r["getOn"], r["getOff"])}}分 -
+                </span>
+              </span>
               <icon-goal/>
             </div>
           </div>
@@ -39,7 +39,7 @@
 
 <script>
     // import sample data
-    import routeLists from '../assets/json/routeList';
+    // import routeLists from '../assets/json/routeList';
 
     import IconWalking from '../components/IconWalking';
     import IconBuss from '../components/IconBuss';
@@ -51,10 +51,15 @@
         components: {IconBuss, IconWalking, IconGoal, IconStart},
         data() {
             return {
-                lists: routeLists.routes,
+                // lists: routeLists.routes,
                 bodyStyle: {
                     padding: "10px",
                 }
+            }
+        },
+        computed: {
+            routes() {
+                return this.$store.state.routes
             }
         },
         methods: {
@@ -65,6 +70,7 @@
                 return `${hh}:${mm}`;
             },
             getSubTime(s, e) {
+                console.log(s, e);
                 const sub = e - s;
                 return sub / 1000 / 60;
             },

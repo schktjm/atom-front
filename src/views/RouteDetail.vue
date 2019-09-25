@@ -7,22 +7,22 @@
       <span class="min-font-style">{{getSubTime(data.startTime, data.endTime)}}分 {{data.fare}}円</span>
     </div>
     <div>
-      <stop-card :stop="{arrive: data.route[0]['get-on'], name: data.route[0]['from']}"></stop-card>
+      <stop-card :stop="{arrive: data.route[0]['getOn'], name: data.route[0]['frm']}"></stop-card>
       <div v-for="(r,idx) in data.route" :key="idx">
         <move-card :move="{
         ...r,
-        frm: r['from'],
-        getOn: r['get-on'],
-        getOff: r['get-off']
+        frm: r['frm'],
+        getOn: r['getOn'],
+        getOff: r['getOff']
         }"/>
         <stop-card v-if="idx+1 < routeLen" :stop="{
         name: r['to'],
-        arrive: r['get-off'],
-        leave: data.route[idx+1]['get-on']
+        arrive: r['getOff'],
+        leave: data.route[idx+1]['getOn']
         }"/>
         <stop-card v-else :stop="{
         name: r['to'],
-        arrive: r['get-off'],
+        arrive: r['getOff'],
         }"/>
 
       </div>
@@ -32,8 +32,6 @@
 
 <script>
 
-    import data from '../assets/json/routeDetail';
-
     import StopCard from '../components/StopCard';
     import MoveCard from '../components/MoveCard';
 
@@ -42,7 +40,23 @@
         components: {StopCard, MoveCard},
         data() {
             return {
-                data: data
+                id: 0
+            }
+        },
+        created() {
+            this.id = parseInt(this.$route.params.id);
+            console.log(this.data)
+        },
+        mounted() {
+            console.log(typeof this.id);
+            console.log(this.data)
+        },
+        computed: {
+            routeLen() {
+                return this.data.route.length;
+            },
+            data() {
+                return this.$store.getters.getRouteById(this.id)[0];
             }
         },
         methods: {
@@ -57,11 +71,6 @@
                 return sub / 1000 / 60;
             }
         },
-        computed: {
-            routeLen() {
-                return data.route.length;
-            }
-        }
     }
 </script>
 
