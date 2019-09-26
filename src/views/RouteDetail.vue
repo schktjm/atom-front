@@ -78,6 +78,7 @@
   .title-style {
     height: 50px;
     font-size: 32px;
+    white-space: nowrap;
 
     .min-font-style {
       font-size: 24px;

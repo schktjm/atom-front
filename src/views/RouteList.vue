@@ -1,20 +1,22 @@
 <template>
   <div class="route-list-style">
-    <div style="margin: 10px;" v-for="(list,idx) in routes" :key="idx">
-      <el-card :body-style="bodyStyle">
-        <el-link @click="routerPush(list.id)" :underline="false">
-          <div class="card-item-style">
-            <div>
-              <span class="time-font-style">{{getHM(list.startTime)}} - {{getHM(list.endTime)}}</span>
-              <span class="between-style"></span>
-              <span>({{getSubTime(list.startTime, list.endTime)}}分)
+    <div v-if="routes.length > 0">
+      <div style="margin: 10px;" v-for="(list,idx) in routes" :key="idx">
+        <el-card :body-style="bodyStyle">
+          <el-link @click="routerPush(list.id)" :underline="false">
+            <div class="card-item-style">
+              <div>
+                <span class="time-font-style">{{getHM(list.startTime)}} - {{getHM(list.endTime)}}</span>
+                <span class="between-style"></span>
+                <span>({{getSubTime(list.startTime, list.endTime)}}分)
           </span>
-            </div>
-            <div class="middle-font-style">乗換 : {{list.transfer}}回<span class="between-style"></span>料金 : {{list.fare}}円
-            </div>
-            <div>
-              <icon-start/>
-              <span v-for="(r,jdx) in list.route" :key="jdx">
+              </div>
+              <div class="middle-font-style">乗換 : {{list.transfer}}回<span class="between-style"></span>料金 :
+                {{list.fare}}円
+              </div>
+              <div>
+                <icon-start/>
+                <span v-for="(r,jdx) in list.route" :key="jdx">
                 <span v-if="r.way === '路線バス'">
                   {{r.from}} - <icon-buss/> - {{r.to}}
                 </span>
@@ -22,12 +24,14 @@
                  - <icon-walking/> {{getSubTime(r["getOn"], r["getOff"])}}分 -
                 </span>
               </span>
-              <icon-goal/>
+                <icon-goal/>
+              </div>
             </div>
-          </div>
-        </el-link>
-      </el-card>
+          </el-link>
+        </el-card>
+      </div>
     </div>
+    <div v-else>経路が見つかりません</div>
 
     <div class="button-top-style">
       <router-link to="/">
@@ -38,8 +42,6 @@
 </template>
 
 <script>
-    // import sample data
-    // import routeLists from '../assets/json/routeList';
 
     import IconWalking from '../components/IconWalking';
     import IconBuss from '../components/IconBuss';
@@ -65,13 +67,11 @@
         methods: {
             getHM(unitime) {
                 const date = new Date(unitime);
-                console.log(typeof unitime);
                 const hh = ('00' + date.getHours()).slice(-2);
                 const mm = ('00' + date.getMinutes()).slice(-2);
                 return `${hh}:${mm}`;
             },
             getSubTime(s, e) {
-                console.log(s, e);
                 const sub = e - s;
                 return sub / 1000 / 60;
             },

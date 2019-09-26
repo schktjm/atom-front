@@ -20,7 +20,8 @@
       </div>
 
       <el-form-item>
-        <el-button class="button-style" type="primary" @click="submitForm('ruleForm')">この条件で検索</el-button>
+        <el-button class="button-style" type="primary" :loading="isLoading" @click="submitForm('ruleForm')">この条件で検索
+        </el-button>
       </el-form-item>
       <el-dialog width="95%" :visible.sync="dialogTableVisible">
         <detailed-time @onCancel="onCancel" @onSubmit="setTimeText"/>
@@ -56,10 +57,12 @@
         components: {DetailedTime, DetailSearch},
         data() {
             return {
+                isLoading: false,
                 dialogTableVisible: false,
                 ruleForm: {
                     start: '',
                     end: '',
+                    date: 1569409197
                 },
                 rules: {
                     start: [{required: true, message: '出発地を入力してください', trigger: 'blur'}],
@@ -76,6 +79,9 @@
                     isLongWait: false
                 }
             }
+        },
+        created() {
+            this.ruleForm.date = Math.floor(new Date().getTime() / 1000);
         },
         methods: {
             onCancel() {
@@ -98,7 +104,12 @@
             setTimeText(form) {
                 if (form.isNow) {
                     this.timeText = '現在時刻 出発'
+                    this.ruleForm.date = Math.floor(new Date().getTime() / 1000);
                 } else {
+                    let dateArr = form.date.toString().split(" ");
+                    dateArr[4] = form.time.toString().split(" ")[4];
+                    const newDate = new Date(dateArr.join(" ")).getTime();
+                    this.ruleForm.date = Math.floor(newDate / 1000);
                     if (form.type === '1') {
                         this.timeText = `${this.parseYMD2ja(form.date)} 始発`
                     } else if (form.type === '2') {
@@ -120,13 +131,14 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        console.log("aaa")
+                        this.isLoading = true;
                         this.$store.dispatch('getRoutes', {
                             "from": this.ruleForm.start,
                             "to": this.ruleForm.end,
-                            "date": "1569409197"
+                            "date": String(this.ruleForm.date)
                         })
                             .then(flg => {
+                                this.isLoading = false;
                                 if (flg) this.$router.push("/list");
                             })
                     } else {
