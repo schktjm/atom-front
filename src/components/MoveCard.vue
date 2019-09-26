@@ -1,6 +1,6 @@
 <template>
   <div class="move-card-style">
-    <div class="buss-style" v-if="move.way === 'buss'">
+    <div class="buss-style" v-if="move.way === '路線バス'">
       <div>{{move.line}}</div>
       <div>
         {{move.fare}}円
