@@ -120,7 +120,12 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.$router.push('/list')
+                        console.log("aaa")
+                        this.$store.dispatch('getRoutes', {
+                            "from": this.ruleForm.start,
+                            "to": this.ruleForm.end,
+                            "date": "1569409197"
+                        })
                     } else {
                         return false;
                     }

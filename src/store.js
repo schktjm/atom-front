@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import getLocalBusRoute from './js/api';
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -32,6 +34,18 @@ export default new Vuex.Store({
             return state.routes.filter(x => x.id === id)
         }
     },
-    mutations: {},
-    actions: {}
+    mutations: {
+        setRoutes(res) {
+            console.log("in mutations", res)
+        }
+    },
+    actions: {
+        getRoutes({commit}, payload) {
+            getLocalBusRoute(
+                payload,
+                res => console.log(res),
+                err => console.error("error with", err)
+            )
+        }
+    }
 })
