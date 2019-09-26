@@ -15,7 +15,7 @@
             <div>
               <icon-start/>
               <span v-for="(r,jdx) in list.route" :key="jdx">
-                <span v-if="r.way === 'buss'">
+                <span v-if="r.way === '路線バス'">
                   {{r.from}} - <icon-buss/> - {{r.to}}
                 </span>
                 <span class="no-wrap-style" v-else>
@@ -65,6 +65,7 @@
         methods: {
             getHM(unitime) {
                 const date = new Date(unitime);
+                console.log(typeof unitime);
                 const hh = ('00' + date.getHours()).slice(-2);
                 const mm = ('00' + date.getMinutes()).slice(-2);
                 return `${hh}:${mm}`;

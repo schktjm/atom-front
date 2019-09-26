@@ -126,6 +126,9 @@
                             "to": this.ruleForm.end,
                             "date": "1569409197"
                         })
+                            .then(flg => {
+                                if (flg) this.$router.push("/list");
+                            })
                     } else {
                         return false;
                     }
