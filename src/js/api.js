@@ -24,4 +24,17 @@ const getLocalBusRoute = (data, onSuccess, onError) => {
         .catch(err => onError(err));
 };
 
-export {getLocalBusRoute as default};
+const getLocalBusByGeo = (data, onSuccess, onError) => {
+    const params = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    };
+    return requestURL(generateURL("/searchBusRouteGridFrom"), params)
+        .then(res => onSuccess(res))
+        .catch(err => onError(err));
+};
+
+export {getLocalBusRoute, getLocalBusByGeo};

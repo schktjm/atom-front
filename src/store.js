@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import getLocalBusRoute from './js/api';
+import { getLocalBusRoute, getLocalBusByGeo } from './js/api';
 
 Vue.use(Vuex);
 
@@ -100,6 +100,20 @@ export default new Vuex.Store({
     actions: {
         getRoutes({commit}, payload) {
             return getLocalBusRoute(
+                payload,
+                res => {
+                    commit('setRoutes', res);
+                    return true;
+                },
+                err => {
+                    // eslint-disable-next-line
+                    console.error(err);
+                    return false;
+                }
+            )
+        },
+        getRoutesByGeo({commit}, payload) {
+            return getLocalBusByGeo(
                 payload,
                 res => {
                     commit('setRoutes', res);
