@@ -75,6 +75,7 @@
                     date: 1569409197
                 },
                 rules: {
+                    // 別途定義して、messageだけを切り替えたほうがわかりやすそう
                     start: [{required: true, message: '出発地を入力してください', trigger: 'blur'}],
                     end: [{required: true, message: '目的地を入力してください', trigger: 'blur'}],
                 },
@@ -110,6 +111,7 @@
                 this.dialogTableVisible = false;
             },
             parseYMD2ja(date) {
+                // 外部に年月日曜日を返す関数を用意して、その引数を整形して、返したほうが良さそう
                 const dow = ["日", "月", "火", "水", "木", "金", "土"];
                 const y = date.getFullYear();
                 const m = date.getMonth() + 1;
@@ -121,14 +123,21 @@
                 return `${d.getHours()}:${d.getMinutes()}`
             },
             setTimeText(form) {
-                if (form.isNow) {
+                // ロジックが詰まりすぎているので、分離していきたい
+                if (form.isNow) {//1
+                    // 2
                     this.timeText = '現在時刻 出発'
+                    // 3
                     this.ruleForm.date = Math.floor(new Date().getTime() / 1000);
                 } else {
+                    // 以下のデータ整形処理はまた別関数でにして、それをthis.ruleForm.dateに入れるほうがよさそう
+                    // 4
                     let dateArr = form.date.toString().split(" ");
                     dateArr[4] = form.time.toString().split(" ")[4];
                     const newDate = new Date(dateArr.join(" ")).getTime();
                     this.ruleForm.date = Math.floor(newDate / 1000);
+                    // 処理ブロックの切れ目なので、改行
+                    // 上のform.isNowとはまた別の比較をしているので、別関数でやったほうがよさそう
                     if (form.type === '1') {
                         this.timeText = `${this.parseYMD2ja(form.date)} 始発`
                     } else if (form.type === '2') {
@@ -155,9 +164,38 @@
             },
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
-                    if (valid) {
+                    // ガード節で早期リターンのほうがネストが深くならない
+                    // 内容も手続き型のようになっているので、処理を一つ一つ分離したい
+                    // if (!valid){
+                    //   return false
+                    // }
+                    // this.isLoading = true;
+                    // let flag = "getRoutes"
+                    // let dataObject = {
+                    //         "from": this.ruleForm.start,
+                    //         "to": this.ruleForm.end,
+                    //         "date": String(this.ruleForm.date)
+                    //     }
+                    // if (this.isHere) {
+                    //     flag = 'getRoutesByGeo'
+                    //     dataObject =  {
+                    //         "fromLat": String(this.geolocation.lat),
+                    //         "fromLng": String(this.geolocation.lng),
+                    //         "to": this.ruleForm.end,
+                    //         "date": String(this.ruleForm.date)
+                    //     }   
+                    // }  
+                    // this.$store.dispatch(flag, dataObject)
+                    //     .then(flg => {
+                    //         this.isLoading = false;
+                    //         if (flg) this.$router.push("/list");
+                    //     })
+                    
+                    
+                if (valid) {
                         this.isLoading = true;
                         if (this.isHere) {
+                          
                             this.$store.dispatch('getRoutesByGeo', {
                                 "fromLat": String(this.geolocation.lat),
                                 "fromLng": String(this.geolocation.lng),
@@ -166,6 +204,7 @@
                             })
                                 .then(flg => {
                                     this.isLoading = false;
+                                    // ifの書式統一のために、{}をつけたほうが好み
                                     if (flg) this.$router.push("/list");
                                 })
                         } else {
@@ -183,6 +222,7 @@
                     } else {
                         return false;
                     }
+
                 });
             },
         }

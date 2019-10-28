@@ -40,6 +40,7 @@ export default new Vuex.Store({
             if (res.length > 0) {
                 res.map(route => {
                     const newRoutes = {};
+                    // 以下のロジックがわかりにくいので関数分離していきたい
                     Object.keys(route).map(k => {
                         switch (k) {
                             case "id":

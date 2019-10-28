@@ -48,6 +48,7 @@
     import IconGoal from '../components/IconFlag';
     import IconStart from '../components/IconStand';
 
+    // 以下の処理にRouteListと重複してい流ので旧通過したほうがよさそう
     export default {
         name: 'RouteList',
         components: {IconBuss, IconWalking, IconGoal, IconStart},

@@ -9,6 +9,7 @@
       <span>{{form.time}}時間以内</span>
       <el-slider :max="12" v-model="form.time" :show-tooltip="false" :marks="timeMarks"></el-slider>
     </el-form-item>
+    <!-- ここfor で回したほうがすっきりしそう -->
     <el-form-item>
       <label class="label-style">景色がいいところ優先</label>
       <el-switch v-model="form.isNiceView"></el-switch>

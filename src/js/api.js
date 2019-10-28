@@ -12,6 +12,7 @@ const generateURL = (params) => {
 };
 
 const getLocalBusRoute = (data, onSuccess, onError) => {
+    // クライアント作成のなかで共通化できそう
     const params = {
         method: "POST",
         headers: {
@@ -19,6 +20,7 @@ const getLocalBusRoute = (data, onSuccess, onError) => {
         },
         body: JSON.stringify(data)
     };
+    // catchを複数しているけど一箇所で良さそう？
     return requestURL(generateURL("/searchBusRoute"), params)
         .then(res => onSuccess(res))
         .catch(err => onError(err));

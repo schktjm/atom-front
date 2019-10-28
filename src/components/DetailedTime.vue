@@ -4,6 +4,7 @@
       <div class="select-method-style">
         <el-button class="text-button-style" type="text" @click="setInit">現在時刻</el-button>
         <el-radio-group class="method-style" v-model="form.method" size="mini">
+        <!-- ここをlabelとtextをセットにして、オブジェクトにして、forで回したほうがすっきりしそう -->
           <el-radio-button label="0">出発</el-radio-button>
           <el-radio-button label="1">到着</el-radio-button>
         </el-radio-group>
@@ -29,6 +30,7 @@
     </el-form-item>
     <el-form-item>
       <el-radio-group class="radio-group-style" @change="setTime" v-model="form.type" size="small">
+        <!-- ここをlabelとtextをセットにして、オブジェクトにして、forで回したほうがすっきりしそう -->
         <el-radio-button class="radio-item" label="1">始発</el-radio-button>
         <el-radio-button class="radio-item" label="2">終電</el-radio-button>
         <el-radio-button class="radio-item" label="0">指定なし</el-radio-button>
@@ -52,6 +54,8 @@
         },
         data() {
             return {
+              // コメントで書いてあるのいいね
+              //　methodとtypeはenumで定義してあるともっとよさそう
                 form: {
                     // 0:出発, 1:到着
                     method: "0",
@@ -67,6 +71,7 @@
         },
         methods: {
             getYMD(date) {
+                // 個々の処理はHome.vueに書いたように関数を用意して、そこから引っ張ってくるとよさそう
                 const y = date.getFullYear();
                 const m = date.getMonth() + 1;
                 const d = date.getDate();
@@ -118,6 +123,7 @@
           width: 50%;
 
           /deep/ span {
+            // importantを使うかどうかは結構吟味したほうがよさそう
             width: 100% !important;
           }
         }
