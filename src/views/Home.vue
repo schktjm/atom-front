@@ -72,7 +72,8 @@
                 ruleForm: {
                     start: '',
                     end: '',
-                    date: 1569409197
+                    date: 1569409197,
+                    useDateAs: 1
                 },
                 rules: {
                     start: [{required: true, message: '出発地を入力してください', trigger: 'blur'}],
@@ -122,22 +123,27 @@
             },
             setTimeText(form) {
                 if (form.isNow) {
-                    this.timeText = '現在時刻 出発'
+                    this.timeText = '現在時刻 出発';
                     this.ruleForm.date = Math.floor(new Date().getTime() / 1000);
+                    this.ruleForm.useDateAs = 1;
                 } else {
                     let dateArr = form.date.toString().split(" ");
                     dateArr[4] = form.time.toString().split(" ")[4];
                     const newDate = new Date(dateArr.join(" ")).getTime();
                     this.ruleForm.date = Math.floor(newDate / 1000);
                     if (form.type === '1') {
-                        this.timeText = `${this.parseYMD2ja(form.date)} 始発`
+                        this.timeText = `${this.parseYMD2ja(form.date)} 始発`;
+                        this.ruleForm.useDateAs = 3;
                     } else if (form.type === '2') {
-                        this.timeText = `${this.parseYMD2ja(form.date)} 終電`
+                        this.timeText = `${this.parseYMD2ja(form.date)} 終電`;
+                        this.ruleForm.useDateAs = 4;
                     } else {
                         if (form.method === '0') {
-                            this.timeText = `${this.parseYMD2ja(form.date)} ${this.parseTime(form.time)} 出発`
+                            this.timeText = `${this.parseYMD2ja(form.date)} ${this.parseTime(form.time)} 出発`;
+                            this.ruleForm.useDateAs = 1;
                         } else {
-                            this.timeText = `${this.parseYMD2ja(form.date)} ${this.parseTime(form.time)} 到着`
+                            this.timeText = `${this.parseYMD2ja(form.date)} ${this.parseTime(form.time)} 到着`;
+                            this.ruleForm.useDateAs = 2;
                         }
                     }
                 }
@@ -162,7 +168,8 @@
                                 "fromLat": String(this.geolocation.lat),
                                 "fromLng": String(this.geolocation.lng),
                                 "to": this.ruleForm.end,
-                                "date": String(this.ruleForm.date)
+                                "date": String(this.ruleForm.date),
+                                "useDateAs": this.ruleForm.useDateAs
                             })
                                 .then(flg => {
                                     this.isLoading = false;
@@ -172,7 +179,8 @@
                             this.$store.dispatch('getRoutes', {
                                 "from": this.ruleForm.start,
                                 "to": this.ruleForm.end,
-                                "date": String(this.ruleForm.date)
+                                "date": String(this.ruleForm.date),
+                                "useDateAs": this.ruleForm.useDateAs
                             })
                                 .then(flg => {
                                     this.isLoading = false;
