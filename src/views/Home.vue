@@ -122,6 +122,7 @@
                 return `${d.getHours()}:${d.getMinutes()}`
             },
             setTimeText(form) {
+                console.log(form);
                 if (form.isNow) {
                     this.timeText = '現在時刻 出発';
                     this.ruleForm.date = Math.floor(new Date().getTime() / 1000);

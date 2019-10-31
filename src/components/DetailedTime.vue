@@ -3,7 +3,7 @@
     <el-form-item>
       <div class="select-method-style">
         <el-button class="text-button-style" type="text" @click="setInit">現在時刻</el-button>
-        <el-radio-group class="method-style" v-model="form.method" size="mini">
+        <el-radio-group class="method-style" v-model="form.method" size="mini" @change="setTime">
           <el-radio-button label="0">出発</el-radio-button>
           <el-radio-button label="1">到着</el-radio-button>
         </el-radio-group>
@@ -78,7 +78,12 @@
                 this.form.isNow = true;
             },
             setTime() {
-                this.form.isNow = false;
+                if (this.form.method !== "0" || this.form.type !== "0") {
+                    console.log("not now");
+                    this.form.isNow = false;
+                } else {
+                    this.form.isNow = true;
+                }
             },
             setTimeNone() {
                 this.form.time = ''
@@ -88,6 +93,7 @@
                 this.$emit('onCancel')
             },
             onSubmit() {
+                console.log(this.form);
                 this.$emit('onSubmit', this.form)
             }
         }
